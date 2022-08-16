@@ -15,7 +15,7 @@ namespace DefaultNamespace.Components
         SendDataForChildEntity = false)]
     public struct TranslationPrecise
     {
-        [GhostField(Composite = true, Quantization = 1000, Smoothing = SmoothingAction.InterpolateAndExtrapolate, MaxSmoothingDistance = 0.1f)]
+        [GhostField(Composite = true, Quantization = 10000, Smoothing = SmoothingAction.InterpolateAndExtrapolate, MaxSmoothingDistance = 0.1f)]
         public float3 Value;
 
     }
@@ -26,7 +26,7 @@ namespace DefaultNamespace.Components
         SendDataForChildEntity = false)]
     public struct RotationPrecise
     {
-        [GhostField(Quantization = 1000, Smoothing = SmoothingAction.InterpolateAndExtrapolate)]
+        [GhostField(Quantization = 10000, Smoothing = SmoothingAction.InterpolateAndExtrapolate)]
         public quaternion Value;
     }
     

@@ -9,8 +9,8 @@ namespace Commands
     public struct RightHandInput: ICommandData
     {
         [GhostField] public uint Tick { get; set; }
-        [GhostField(Quantization = 1000)] public float3 Position;
-        [GhostField(Quantization = 1000)] public quaternion Rotation;
+        [GhostField(Quantization = 10000)] public float3 Position;
+        [GhostField(Quantization = 10000)] public quaternion Rotation;
     }
     
 }

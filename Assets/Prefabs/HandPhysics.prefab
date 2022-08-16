@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 4400600888053512021}
   - component: {fileID: 695307756500123809}
   - component: {fileID: 38011808555095088}
+  - component: {fileID: 7943775959607622534}
   m_Layer: 0
   m_Name: HandPhysics
   m_TagString: Untagged
@@ -134,11 +135,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c79d771cedb4794bf100ce60df5f764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultGhostMode: 1
+  DefaultGhostMode: 2
   SupportedGhostModes: 3
   OptimizationMode: 0
   Importance: 1
-  prefabId: 21ac0f280cf5b55409042767defce124
+  prefabId: a27b3aa96d734a54a90726d3051799ac
   Name: Hand
   HasOwner: 1
   SupportAutoCommandTarget: 1
@@ -165,11 +166,11 @@ MonoBehaviour:
   m_ShapeType: 0
   m_PrimitiveCenter:
     x: 0
-    y: 0
+    y: 0.030000001
     z: 0
   m_PrimitiveSize:
     x: 0.01
-    y: 0.03
+    y: 0.030000001
     z: 0.05
   m_PrimitiveOrientation:
     Value:
@@ -179,7 +180,7 @@ MonoBehaviour:
     RotationOrder: 4
   m_Capsule:
     Height: 0.05
-    Radius: 0.015
+    Radius: 0.015000001
     Axis: 2
   m_Cylinder:
     Height: 0.01
@@ -306,10 +307,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MotionType: 1
-  m_Smoothing: 1
-  m_Mass: 1
-  m_LinearDamping: 0.01
-  m_AngularDamping: 0.05
+  m_Smoothing: 2
+  m_Mass: 1000
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_InitialLinearVelocity:
     x: 0
     y: 0
@@ -318,7 +319,7 @@ MonoBehaviour:
     x: 0
     y: 0
     z: 0
-  m_GravityFactor: 1
+  m_GravityFactor: 0
   m_OverrideDefaultMassDistribution: 0
   m_CenterOfMass:
     x: 0
@@ -393,3 +394,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Values: []
+--- !u!114 &7943775959607622534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445487707381043990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5457e48c46260be47b119490d738d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpringFrequency: 74341
+  SpringDamping: 2530
+  AngularSpringFrequency: 74341
+  AngularSpringDamping: 2530

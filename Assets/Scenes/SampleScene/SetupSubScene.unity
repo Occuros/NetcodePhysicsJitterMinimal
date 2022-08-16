@@ -154,6 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RightHandPrefab: {fileID: 445487707381043990, guid: f68688fc53c5afa4b8d2720b7f1433d4, type: 3}
   RightHandPhysicsPrefab: {fileID: 445487707381043990, guid: a27b3aa96d734a54a90726d3051799ac, type: 3}
+  JointPrefab: {fileID: 2491013971426227719, guid: 359a770273115cb4a8ff73b75f4743e2, type: 3}
+  ItemPrefab: {fileID: 439830090252537652, guid: b1e5fa4e917ef9444936b4c3bac270c0, type: 3}
 --- !u!4 &54191288
 Transform:
   m_ObjectHideFlags: 0

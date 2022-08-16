@@ -7,7 +7,7 @@ namespace Components
     {
         public Entity RightHandPrefab;
         public Entity RightHandPhysicsPrefab;
-
- 
+        public Entity JointPrefab;
+        public Entity ItemPrefab;
     }
 }

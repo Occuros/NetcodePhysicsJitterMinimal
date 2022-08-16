@@ -17,6 +17,7 @@ public class SimulatedPlayerMovement : MonoBehaviour
     {
         _previousPoint = Points[0];
         _currentIndex = 1;
+        Application.targetFrameRate = 72;
 
     }
 
