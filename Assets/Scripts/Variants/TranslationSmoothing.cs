@@ -1,25 +1,29 @@
-﻿using Unity.Entities;
+﻿using System.Diagnostics;
+using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine.SocialPlatforms;
 
 
 namespace Variants
 {
-    [UpdateInWorld(TargetWorld.Client)]
-    public partial class SmoothingRegisteringSystem : SystemBase
-    {
-        protected override void OnStartRunning()
-        {
-            base.OnStartRunning();
-            var smoothing = World.GetExistingSystem<GhostPredictionSmoothingSystem>();
-            if (smoothing != null)
-            {
-                smoothing.RegisterSmoothingAction<Translation>(DefaultTranslateSmoothingAction.Action);
-            }
-        }
-
-        protected override void OnUpdate()
-        {
-        }
-    }
+    // [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
+    // public partial class SmoothingRegisteringSystem : SystemBase
+    // {
+    //     protected override void OnStartRunning()
+    //     {
+    //         base.OnStartRunning();
+    //         
+    //         
+    //         if (SystemAPI.TryGetSingleton<GhostPredictionSmoothing>(out var smoothing))
+    //         {
+    //             smoothing.RegisterSmoothingAction<LocalTransform>(DefaultTraceListener);
+    //         }
+    //     }
+    //
+    //
+    //     protected override void OnUpdate()
+    //     {
+    //     }
+    // }
 }

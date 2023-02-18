@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7325831948225269521}
   - component: {fileID: 7011464465228050827}
   - component: {fileID: 122234681981922263}
+  - component: {fileID: 2559236822746217136}
   m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
@@ -52,21 +53,11 @@ MonoBehaviour:
   OptimizationMode: 0
   Importance: 1
   prefabId: b1e5fa4e917ef9444936b4c3bac270c0
-  Name: Item
   HasOwner: 0
   SupportAutoCommandTarget: 0
+  TrackInterpolationDelay: 0
+  GhostGroup: 0
   UsePreSerialization: 0
-  RefGameObjects:
-  - {fileID: 439830090252537652}
-  RefGuids: 0000000000000000
-  ComponentNames:
-  - Physics.Joints.NetworkedJoint
-  PrefabTypeOverrides:
-  - Value: 7
-    OverrideIndex: 0
-  SendTypeOverrides: []
-  VariantOverrides: []
-  SendForChild: []
 --- !u!114 &7011464465228050827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,13 +123,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShapeType: 3
   m_PrimitiveCenter:
-    x: 0.0000000018626451
-    y: 0
-    z: -0.0000000037252903
+    x: 9.313226e-10
+    y: 0.06
+    z: -9.313226e-10
   m_PrimitiveSize:
-    x: 0.050000016
-    y: 0.050000016
-    z: 0.1
+    x: 0.010000003
+    y: 0.010000003
+    z: 0.020000003
   m_PrimitiveOrientation:
     Value:
       x: -90
@@ -146,15 +137,15 @@ MonoBehaviour:
       z: -90
     RotationOrder: 4
   m_Capsule:
-    Height: 0.1
-    Radius: 0.025000008
+    Height: 0.020000003
+    Radius: 0.0050000013
     Axis: 2
   m_Cylinder:
-    Height: 0.1
-    Radius: 0.025000008
+    Height: 0.020000003
+    Radius: 0.0050000013
     Axis: 2
   m_CylinderSideCount: 20
-  m_SphereRadius: 0.05
+  m_SphereRadius: 0.010000002
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
     m_SimplificationTolerance: 0.03
@@ -261,6 +252,18 @@ MonoBehaviour:
         Tag07: 0
     m_SerializedVersion: 1
   m_SerializedVersion: 1
+--- !u!114 &2559236822746217136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439830090252537652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16549610bfe4458aa9389201d072bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4657718842055145997
 GameObject:
   m_ObjectHideFlags: 0

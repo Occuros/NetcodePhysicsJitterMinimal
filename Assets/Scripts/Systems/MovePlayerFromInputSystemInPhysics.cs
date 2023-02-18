@@ -6,52 +6,40 @@ using Unity.NetCode;
 using Unity.Physics;
 using Unity.Physics.Systems;
 using Unity.Transforms;
+using UnityEngine;
 
 namespace Systems
 {
 
     
-    [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
-    [UpdateBefore(typeof(BuildPhysicsWorld))]
+    [UpdateInGroup(typeof(PredictedFixedStepSimulationSystemGroup))]
     public partial class MovePlayerFromInputSystemInPhysics : SystemBase
     {
-        private GhostPredictionSystemGroup _ghostPredictionSystemGroup;
 
         protected override void OnCreate()
         {
-            _ghostPredictionSystemGroup = World.GetExistingSystem<GhostPredictionSystemGroup>();
         }
 
-        protected override void OnStartRunning()
-        {
-            base.OnStartRunning();
-            this.RegisterPhysicsRuntimeSystemReadWrite();
-        }
 
         protected override void OnUpdate()
         {
-            var tick = _ghostPredictionSystemGroup.PredictingTick;
-            var deltaTime = Time.DeltaTime;
+            var deltaTime = SystemAPI.Time.DeltaTime;
             
             Entities
-                .WithAll<MoveInPhysicsLoop>()
+                .WithAll<Simulate, MoveInPhysicsLoop>()
                 .ForEach((Entity entity,
                     ref PhysicsVelocity velocity,
-                    in Translation translation,
-                    in Rotation rotation,
-                    in DynamicBuffer<RightHandInput> inputBuffer,
+                    in LocalTransform transform,
+                    in RightHandInput input,
                     in PredictedGhostComponent prediction) =>
                 {
-                    if (!GhostPredictionSystemGroup.ShouldPredict(tick, prediction)) return;
-
-                    inputBuffer.GetDataAtTick(tick, out var input);
-
+                    
                     var rigidTransform = new RigidTransform()
                     {
                         pos = input.Position,
                         rot = input.Rotation,
                     };
-                    var targetVelocity = PhysicsVelocity.CalculateVelocityToTarget(GetComponent<PhysicsMass>(entity), translation, rotation,
+                    var targetVelocity = PhysicsVelocity.CalculateVelocityToTarget( SystemAPI.GetComponent<PhysicsMass>(entity), transform.Position, transform.Rotation,
                         rigidTransform, 1f / deltaTime);
 
                     velocity = targetVelocity;

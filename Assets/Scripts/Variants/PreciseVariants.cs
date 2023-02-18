@@ -10,28 +10,23 @@ using Variants;
 namespace DefaultNamespace.Components
 {
     [Preserve]
-    [GhostComponentVariation(typeof(Translation), "Translation - Precise")]
-    [GhostComponent(PrefabType = GhostPrefabType.All, OwnerPredictedSendType = GhostSendType.All,
+    [GhostComponentVariation(typeof(LocalTransform), "Transform - Precise")]
+    [GhostComponent(PrefabType = GhostPrefabType.All, 
         SendDataForChildEntity = false)]
-    public struct TranslationPrecise
+    public struct LocalTransformPrecise
     {
-        [GhostField(Composite = true, Quantization = 10000, Smoothing = SmoothingAction.InterpolateAndExtrapolate, MaxSmoothingDistance = 0.1f)]
-        public float3 Value;
+        [GhostField(Quantization = 1000, Smoothing = SmoothingAction.InterpolateAndExtrapolate, MaxSmoothingDistance = 0.1f)]
+        public float3 Position;
+        [GhostField(Quantization = 1000, Smoothing = SmoothingAction.InterpolateAndExtrapolate, MaxSmoothingDistance = 0.1f)]
+        public quaternion Rotation;
+        [GhostField(Quantization = 1000, Smoothing = SmoothingAction.InterpolateAndExtrapolate, MaxSmoothingDistance = 0.1f)]
+        public float Scale;
+
 
     }
 
-    [Preserve]
-    [GhostComponentVariation(typeof(Rotation), "Rotation - Precise")]
-    [GhostComponent(PrefabType = GhostPrefabType.All, OwnerPredictedSendType = GhostSendType.All,
-        SendDataForChildEntity = false)]
-    public struct RotationPrecise
-    {
-        [GhostField(Quantization = 10000, Smoothing = SmoothingAction.InterpolateAndExtrapolate)]
-        public quaternion Value;
-    }
-    
     [GhostComponentVariation(typeof (PhysicsVelocity), "PhysicsVelocity - Precise")]
-    [GhostComponent(OwnerPredictedSendType = GhostSendType.Predicted, PrefabType = GhostPrefabType.All, SendDataForChildEntity = false)]
+    [GhostComponent(PrefabType = GhostPrefabType.All, SendDataForChildEntity = false)]
     public struct PhysicsVelocityPreciseVariant
     {
         [GhostField(Quantization = 1000, Smoothing = SmoothingAction.InterpolateAndExtrapolate)]

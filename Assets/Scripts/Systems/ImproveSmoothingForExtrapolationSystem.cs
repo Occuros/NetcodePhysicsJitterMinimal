@@ -12,46 +12,40 @@ using UnityEngine;
 namespace Systems
 {
     
-    [UpdateInWorld(TargetWorld.Client)]
-    [UpdateInGroup(typeof(GhostPredictionSystemGroup))]
-    [UpdateBefore(typeof(PredictedPhysicsSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
+    [UpdateInGroup(typeof(PredictedFixedStepSimulationSystemGroup))]
     public partial class ImproveSmoothingForExtrapolationSystem : SystemBase
     {
-        private GhostPredictionSystemGroup _ghostPredictionSystemGroup;
-        private ClientSimulationSystemGroup _clientSimulationSystemGroup;
 
         protected override void OnCreate()
         {
-            _ghostPredictionSystemGroup = World.GetExistingSystem<GhostPredictionSystemGroup>();
-            _clientSimulationSystemGroup = World.GetExistingSystem<ClientSimulationSystemGroup>();
+         
         }
 
         protected override void OnUpdate()
         {
-            var tick = _ghostPredictionSystemGroup.PredictingTick;
-            var deltaTime = Time.DeltaTime;
-            var serverTickFraction = _clientSimulationSystemGroup.ServerTickFraction;
-            var isFinalTick = _ghostPredictionSystemGroup.IsFinalPredictionTick;
+            var networkTime = SystemAPI.GetSingleton<NetworkTime>();
+            var tick = networkTime.ServerTick;
+            var deltaTime = SystemAPI.Time.DeltaTime;
+            var serverTickFraction = networkTime.ServerTickFraction;
+            var isFinalTick = networkTime.IsFinalPredictionTick;
             Entities
-                .WithAll<MoveInPhysicsLoop>()
+                .WithAll<Simulate, MoveInPhysicsLoop>()
                 .ForEach((Entity entity,
                     ref PhysicsGraphicalSmoothing graphicalSmoothing,
-                    in Translation translation,
-                    in Rotation rotation,
-                    in DynamicBuffer<RightHandInput> inputBuffer,
+                    in LocalTransform transform,
+                    in RightHandInput input,
                     in PredictedGhostComponent prediction) =>
                 {
                     if (serverTickFraction >= 1 || !isFinalTick) return;
-
-                    inputBuffer.GetDataAtTick(tick, out var input);
-
+                    
                     var rigidTransform = new RigidTransform()
                     {
                         pos = input.Position,
                         rot = input.Rotation,
                     };
-                    var targetVelocity = PhysicsVelocity.CalculateVelocityToTarget(GetComponent<PhysicsMass>(entity),
-                        translation, rotation,
+                    var targetVelocity = PhysicsVelocity.CalculateVelocityToTarget(SystemAPI.GetComponent<PhysicsMass>(entity),
+                        transform.Position, transform.Rotation,
                         rigidTransform, 1f / deltaTime);
 
                     graphicalSmoothing.ApplySmoothing = 1;

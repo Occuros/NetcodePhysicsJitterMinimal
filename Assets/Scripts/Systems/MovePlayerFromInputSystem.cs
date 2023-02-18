@@ -8,39 +8,33 @@ using UnityEngine;
 
 namespace Systems
 {
-    [UpdateInGroup(typeof(GhostPredictionSystemGroup))]
+    [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
     public partial class MovePlayerFromInputSystem : SystemBase
     {
-        private GhostPredictionSystemGroup _ghostPredictionSystemGroup;
 
         protected override void OnCreate()
         {
-            _ghostPredictionSystemGroup = World.GetExistingSystem<GhostPredictionSystemGroup>();
         }
 
         protected override void OnUpdate()
         {
-            var tick = _ghostPredictionSystemGroup.PredictingTick;
-            
             //Handle right hand
             Entities
+               .WithAll<Simulate>()
                 .WithNone<MoveInPhysicsLoop>()
                 .ForEach((Entity entity,
-                ref Translation translation,
-                ref Rotation rotation,
-                in DynamicBuffer<RightHandInput> inputBuffer,
+                ref LocalTransform transform,
+                in RightHandInput input,
                 in PredictedGhostComponent prediction) =>
             {
-                if (!GhostPredictionSystemGroup.ShouldPredict(tick, prediction)) return;
 
-                inputBuffer.GetDataAtTick(tick, out var input);
 
                 if (math.any(math.isinf(input.Position)) || math.all(input.Position == float3.zero))
                 {
                     return;
                 }
-                translation.Value = input.Position;
-                rotation.Value = input.Rotation;
+                transform.Position = input.Position;
+                transform.Rotation = input.Rotation;
             }).Run();
 
           

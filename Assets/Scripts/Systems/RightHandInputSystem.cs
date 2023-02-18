@@ -11,35 +11,29 @@ namespace Systems
     [UpdateInGroup(typeof(GhostInputSystemGroup))]
     public partial class RightHandInputSystem : SystemBase
     {
-        private ClientSimulationSystemGroup _clientSimulationSystemGroup;
         private Transform _rightHandGo;
         private Entity _localTrackingSpaceEntity;
 
 
         protected override void OnCreate()
         {
-            _clientSimulationSystemGroup = World.GetExistingSystem<ClientSimulationSystemGroup>();
-            RequireSingletonForUpdate<PlayerSpawnerComponent>();
+            RequireForUpdate<PlayerSpawner>();
+            RequireForUpdate<NetworkIdComponent>();
             _rightHandGo = Object.FindObjectOfType<SimulatedRightHand>().transform;
+            
         }
 
 
         protected override void OnUpdate()
         {
-            if (!TryGetSingleton<NetworkIdComponent>(out var networkId)) return;
-            var input = default(RightHandInput);
-
-            input.Tick = _clientSimulationSystemGroup.ServerTick;
-
             Entities
+               .WithAll<GhostOwnerIsLocal>()
                 .WithoutBurst()
                 .ForEach((Entity entity,
-                    ref DynamicBuffer<RightHandInput> rightHandInputBuffer,
+                    ref RightHandInput input,
                     in GhostOwnerComponent owner
                 ) =>
                 {
-                    if (owner.NetworkId != networkId.Value) return;
-
                     var t = _rightHandGo.transform;
                     input.Position = t.position;
                     input.Rotation = t.rotation;
@@ -47,8 +41,6 @@ namespace Systems
                     {
                         input.Position = float3.zero;
                     }
-
-                    rightHandInputBuffer.AddCommandData(input);
                 }).Run();
         }
     }

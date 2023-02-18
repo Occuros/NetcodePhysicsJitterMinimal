@@ -1,84 +1,94 @@
 ﻿using Components;
 using DefaultNamespace;
-using Physics.Joints;
+using Unity.Burst;
+using Unity.Burst.Intrinsics;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
 using Unity.NetCode;
-using Unity.Transforms;
 using UnityEngine;
 
 namespace Systems
 {
-    [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
-    // [AlwaysUpdateSystem]
-    public partial class GoInGameServerSystem : SystemBase
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    public partial struct GoInGameServerSystem : ISystem
     {
-        protected override void OnCreate()
+        private EntityQuery _newNetworkStreamConnectionsQuery;
+
+
+        public void OnCreate(ref SystemState state)
         {
-            RequireSingletonForUpdate<PlayerSpawnerComponent>();
-            RequireForUpdate(GetEntityQuery(
-                ComponentType.ReadOnly<GoInGameRequest>(),
-                ComponentType.ReadOnly<ReceiveRpcCommandRequestComponent>()));
+            state.RequireForUpdate<PlayerSpawner>();
+            state.RequireForUpdate<ReceiveRpcCommandRequestComponent>();
 
-            if (!HasSingleton<ClientServerTickRate>())
-            {
-                var e = EntityManager.CreateEntity(typeof(ClientServerTickRate));
-            }
-
-            var tickRate = GetSingleton<ClientServerTickRate>();
-            // tickRate.SimulationTickRate = 31;
-            tickRate.SimulationTickRate = 72;
-            // tickRate.SimulationTickRate = 90;
-
-            SetSingleton(tickRate);
+            using var builder = new EntityQueryBuilder(Allocator.Temp)
+                               .WithAll<NetworkStreamConnection>()
+                               .WithNone<ConnectionState>();
+            _newNetworkStreamConnectionsQuery = state.GetEntityQuery(builder);
         }
 
-        protected override void OnUpdate()
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
         {
-            var spawner = GetSingleton<PlayerSpawnerComponent>();
-            var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
-      
-            Entities
-                .WithNone<SendRpcCommandRequestComponent>()
-                .WithoutBurst()
-                .WithStructuralChanges()
-                .ForEach((Entity requestEntity, in GoInGameRequest request,
-                    in ReceiveRpcCommandRequestComponent received) =>
+            var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+                               .CreateCommandBuffer(state.WorldUnmanaged);
+
+            state.EntityManager.AddComponent<ConnectionState>(_newNetworkStreamConnectionsQuery);
+
+            var networkIdLookup = SystemAPI.GetComponentLookup<NetworkIdComponent>(true);
+            var spawner = SystemAPI.GetSingleton<PlayerSpawner>();
+            var netDbg = SystemAPI.GetSingleton<NetDebug>();
+
+            var job = new GoInGameServerJob()
+            {
+                ecb = ecb,
+                networkIdLookup = networkIdLookup,
+                spawner = spawner,
+            };
+
+            job.Run();
+        }
+
+        [BurstCompile]
+        private partial struct GoInGameServerJob : IJobEntity
+        {
+            public EntityCommandBuffer ecb;
+
+            [ReadOnly]
+            public ComponentLookup<NetworkIdComponent> networkIdLookup;
+
+            [ReadOnly]
+            public PlayerSpawner spawner;
+
+
+            private void Execute(Entity entity, in GoInGameRequest request,
+                                 in ReceiveRpcCommandRequestComponent received)
+            {
+                ecb.AddComponent<NetworkStreamInGame>(received.SourceConnection);
+                if (!networkIdLookup.HasComponent(received.SourceConnection))
                 {
-                    EntityManager.AddComponent<NetworkStreamInGame>(received.SourceConnection);
-                    var networkId = GetComponent<NetworkIdComponent>(received.SourceConnection).Value;
-                    Debug.Log($"Server setting connection {networkId} to in game");
-                    var rightHandEntity = commandBuffer.Instantiate(spawner.RightHandPrefab);
-                    commandBuffer.SetComponent(rightHandEntity, new GhostOwnerComponent() { NetworkId = networkId });
-                    commandBuffer.AppendToBuffer(received.SourceConnection,
-                        new LinkedEntityGroup { Value = rightHandEntity });
+                    Debug.LogError("NeworkId is not present on the source connection of the rpc");
+                    return;
+                }
 
-                    var rightHandPhysics = commandBuffer.Instantiate(spawner.RightHandPhysicsPrefab);
-                    commandBuffer.SetComponent(rightHandPhysics, new GhostOwnerComponent() { NetworkId = networkId });
-                    commandBuffer.AppendToBuffer(received.SourceConnection,
-                        new LinkedEntityGroup { Value = rightHandPhysics });
+                var networkId = networkIdLookup[received.SourceConnection].Value;
+                Debug.Log($"Server setting connection {networkId} to in game");
+                var rightHandEntity = ecb.Instantiate(spawner.RightHandPrefab);
+                ecb.SetComponent(rightHandEntity, new GhostOwnerComponent() { NetworkId = networkId });
+                ecb.AppendToBuffer(received.SourceConnection,
+                    new LinkedEntityGroup { Value = rightHandEntity });
 
-
-                    var itemEntity = commandBuffer.Instantiate(spawner.ItemPrefab);
-                    // commandBuffer.SetComponent(itemEntity, new Translation() { Value = new float3(0.0f, -0.02f, 0.0f) });
-
-                    // var jointEntity = commandBuffer.Instantiate(spawner.JointPrefab);
+                var rightHandPhysics = ecb.Instantiate(spawner.RightHandPhysicsPrefab);
+                ecb.SetComponent(rightHandPhysics, new GhostOwnerComponent() { NetworkId = networkId });
+                ecb.AppendToBuffer(received.SourceConnection,
+                    new LinkedEntityGroup { Value = rightHandPhysics });
 
 
-                    var joint = GetComponent<NetworkedJoint>(spawner.RightHandPhysicsPrefab);
-                    joint.ConnectedEntityA = rightHandPhysics;
-                    joint.ConnectedEntityB = itemEntity;
-                    joint.LocalPositionOfA = float3.zero;
-                    joint.LocalRotationOfA = quaternion.identity;
-                    commandBuffer.SetComponent(rightHandPhysics, joint);
-                    Debug.Log($"we can connect joint to {rightHandPhysics.Index}");
+                var itemEntity = ecb.Instantiate(spawner.ItemPrefab);
 
-
-                    EntityManager.DestroyEntity(requestEntity);
-                }).Run();
-
-            commandBuffer.Playback(EntityManager);
+                ecb.DestroyEntity(entity);
+            }
         }
     }
 }
+

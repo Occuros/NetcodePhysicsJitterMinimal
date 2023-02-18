@@ -2,7 +2,7 @@
 
 namespace Components
 {
-    public struct MoveInPhysicsLoop: IComponentData
+    public struct PlayerHand: IComponentData
     {
         
     }

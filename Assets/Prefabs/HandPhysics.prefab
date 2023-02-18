@@ -95,11 +95,9 @@ GameObject:
   - component: {fileID: 603551864510190215}
   - component: {fileID: 445487707381043985}
   - component: {fileID: 445487707381043984}
-  - component: {fileID: 36257946825286796}
-  - component: {fileID: 4400600888053512021}
-  - component: {fileID: 695307756500123809}
-  - component: {fileID: 38011808555095088}
-  - component: {fileID: 7943775959607622534}
+  - component: {fileID: 1254645436413649273}
+  - component: {fileID: 7055301431735248521}
+  - component: {fileID: 3542519477985914077}
   m_Layer: 0
   m_Name: HandPhysics
   m_TagString: Untagged
@@ -140,17 +138,11 @@ MonoBehaviour:
   OptimizationMode: 0
   Importance: 1
   prefabId: a27b3aa96d734a54a90726d3051799ac
-  Name: Hand
   HasOwner: 1
   SupportAutoCommandTarget: 1
+  TrackInterpolationDelay: 0
+  GhostGroup: 0
   UsePreSerialization: 1
-  RefGameObjects: []
-  RefGuids: 
-  ComponentNames: []
-  PrefabTypeOverrides: []
-  SendTypeOverrides: []
-  VariantOverrides: []
-  SendForChild: []
 --- !u!114 &445487707381043985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,7 +337,7 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
---- !u!114 &36257946825286796
+--- !u!114 &1254645436413649273
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -354,10 +346,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 445487707381043990}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f643f691f0f83684e873cc9806b903d4, type: 3}
+  m_Script: {fileID: 11500000, guid: c16549610bfe4458aa9389201d072bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4400600888053512021
+--- !u!114 &7055301431735248521
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -366,10 +358,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 445487707381043990}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2fd520cc8fe4dd3978cda9599b04eb8, type: 3}
+  m_Script: {fileID: 11500000, guid: 98154d07fe3846fabcf5c051798a9731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &695307756500123809
+--- !u!114 &3542519477985914077
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -378,35 +370,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 445487707381043990}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1fea7091bb9848b191c018d3718ec0d, type: 3}
+  m_Script: {fileID: 11500000, guid: b1391099f2fc4efa9f3d9c073e4c1e43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &38011808555095088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 445487707381043990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a0e609d40706a44cb15d18e9ce022d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Values: []
---- !u!114 &7943775959607622534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 445487707381043990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5457e48c46260be47b119490d738d1a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpringFrequency: 74341
-  SpringDamping: 2530
-  AngularSpringFrequency: 74341
-  AngularSpringDamping: 2530

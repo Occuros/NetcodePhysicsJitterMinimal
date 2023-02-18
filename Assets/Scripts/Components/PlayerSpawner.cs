@@ -2,8 +2,7 @@
 
 namespace Components
 {
-    [GenerateAuthoringComponent]
-    public struct PlayerSpawnerComponent: IComponentData
+    public struct PlayerSpawner: IComponentData
     {
         public Entity RightHandPrefab;
         public Entity RightHandPhysicsPrefab;

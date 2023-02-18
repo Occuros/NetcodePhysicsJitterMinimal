@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 2
+    serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 54191288}
-  - component: {fileID: 54191287}
+  - component: {fileID: 54191289}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -140,22 +140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &54191287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 54191286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42b871f984351064e9944de8cd8f211c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RightHandPrefab: {fileID: 445487707381043990, guid: f68688fc53c5afa4b8d2720b7f1433d4, type: 3}
-  RightHandPhysicsPrefab: {fileID: 445487707381043990, guid: a27b3aa96d734a54a90726d3051799ac, type: 3}
-  JointPrefab: {fileID: 2491013971426227719, guid: 359a770273115cb4a8ff73b75f4743e2, type: 3}
-  ItemPrefab: {fileID: 439830090252537652, guid: b1e5fa4e917ef9444936b4c3bac270c0, type: 3}
 --- !u!4 &54191288
 Transform:
   m_ObjectHideFlags: 0
@@ -171,6 +155,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &54191289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54191286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c8ae6a288cd4f5fb4b2aeeed7e80776, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 439830090252537652, guid: b1e5fa4e917ef9444936b4c3bac270c0, type: 3}
+  JointPrefab: {fileID: 0}
+  RightHandPrefab: {fileID: 445487707381043990, guid: f68688fc53c5afa4b8d2720b7f1433d4, type: 3}
+  RightHandPhysicsPrefab: {fileID: 445487707381043990, guid: a27b3aa96d734a54a90726d3051799ac, type: 3}
 --- !u!1 &1133821813
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,8 +180,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1133821816}
-  - component: {fileID: 1133821815}
   - component: {fileID: 1133821814}
+  - component: {fileID: 1133821817}
   m_Layer: 0
   m_Name: PhysicsSettings
   m_TagString: Untagged
@@ -210,20 +210,6 @@ MonoBehaviour:
   m_EnableSolverStabilizationHeuristic: 1
   m_MultiThreaded: 0
   m_SynchronizeCollisionWorld: 0
---- !u!114 &1133821815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133821813}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5f290902f59a384eb70eaafc65031be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DisableWhenNoConnections: 0
-  PhysicsTicksPerSimTick: 1
 --- !u!4 &1133821816
 Transform:
   m_ObjectHideFlags: 0
@@ -239,3 +225,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1133821817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133821813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd6bf266b32e49ac8c5951317b6b250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnableLagCompensation: 0
+  ServerHistorySize: 0
+  ClientHistorySize: 0
+  ClientNonGhostWorldIndex: 0

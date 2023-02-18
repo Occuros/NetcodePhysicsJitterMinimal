@@ -5,10 +5,8 @@ using Unity.NetCode;
 namespace Commands
 {
     [GhostComponent(OwnerSendType = SendToOwnerType.SendToNonOwner)]
-    [GenerateAuthoringComponent]
-    public struct RightHandInput: ICommandData
+    public struct RightHandInput: IInputComponentData
     {
-        [GhostField] public uint Tick { get; set; }
         [GhostField(Quantization = 10000)] public float3 Position;
         [GhostField(Quantization = 10000)] public quaternion Rotation;
     }
