@@ -3,6 +3,8 @@ using Unity.NetCode;
 
 namespace Holonautic.Scripts.NetworkSetup.Systems
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+    [DisableAutoCreation]
     public partial class SetFramerateSystem: SystemBase
     {
         protected override void OnCreate()

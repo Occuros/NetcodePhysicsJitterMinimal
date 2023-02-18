@@ -30,8 +30,7 @@ namespace Systems
                 .ForEach((Entity entity,
                     ref PhysicsVelocity velocity,
                     in LocalTransform transform,
-                    in RightHandInput input,
-                    in PredictedGhostComponent prediction) =>
+                    in RightHandInput input) =>
                 {
                     
                     var rigidTransform = new RigidTransform()

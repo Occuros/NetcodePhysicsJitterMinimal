@@ -13,7 +13,8 @@ namespace Systems
 {
     
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
-    [UpdateInGroup(typeof(PredictedFixedStepSimulationSystemGroup))]
+    [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
+    [DisableAutoCreation]
     public partial class ImproveSmoothingForExtrapolationSystem : SystemBase
     {
 
@@ -25,7 +26,6 @@ namespace Systems
         protected override void OnUpdate()
         {
             var networkTime = SystemAPI.GetSingleton<NetworkTime>();
-            var tick = networkTime.ServerTick;
             var deltaTime = SystemAPI.Time.DeltaTime;
             var serverTickFraction = networkTime.ServerTickFraction;
             var isFinalTick = networkTime.IsFinalPredictionTick;
